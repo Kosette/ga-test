@@ -1,33 +1,22 @@
-name: testing
-on:
-  workflow_dispatch:
-  push:
+name: Test
 
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # 允许手动触发
 
 jobs:
-  publish:
+  checkout-latest-tag:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Get latest tag name
-        run: echo "TAG_NAME=windows-weekly-$(date --rfc-3339='date')" >> $GITHUB_ENV
-
-      - name: Get latest CHANGELOG
-        run: |
-          sudo apt install awk -y
-          awk '/^## /{if(++count==2){exit}next}count==1{print}' CHANGELOG.md >> ${{github.workspace}}-CHANGELOG.md
+        with:
+          fetch-depth: 0
 
       - name: Upload Github Assets
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          body_path: ${{github.workspace}}-CHANGELOG.md
-          files: |
-            CHANGELOG.md
-          tag_name: ${{ env.TAG_NAME }}
+        run: |
+          echo "${{secrets.DADA}}" > hello.txt
+          cat hello.txt
