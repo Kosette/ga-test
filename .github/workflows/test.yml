@@ -1,0 +1,33 @@
+name: testing
+on:
+  workflow_dispatch:
+  push:
+
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get latest tag name
+        run: echo "TAG_NAME=windows-weekly-$(date --rfc-3339='date')" >> $GITHUB_ENV
+
+      - name: Get latest CHANGELOG
+        run: |
+          sudo apt install awk -y
+          awk '/^## /{if(++count==2){exit}next}count==1{print}' CHANGELOG.md >> ${{github.workspace}}-CHANGELOG.md
+
+      - name: Upload Github Assets
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          body_path: ${{github.workspace}}-CHANGELOG.md
+          files: |
+            CHANGELOG.md
+          tag_name: ${{ env.TAG_NAME }}
