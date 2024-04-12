@@ -1,33 +1,34 @@
-name: testing
-on:
-  workflow_dispatch:
-  push:
+name: Test
 
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # 允许手动触发
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
+  checkout-latest-tag:
     permissions:
       contents: write
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Get latest tag name
-        run: echo "TAG_NAME=windows-weekly-$(date --rfc-3339='date')" >> $GITHUB_ENV
-
-      - name: Get latest CHANGELOG
-        run: |
-          sudo apt install awk -y
-          awk '/^## /{if(++count==2){exit}next}count==1{print}' CHANGELOG.md >> ${{github.workspace}}-CHANGELOG.md
+        with:
+          repository: tsukinaha/tsukimi
+          fetch-depth: 0 # 获取所有 tags
 
       - name: Upload Github Assets
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          body_path: ${{github.workspace}}-CHANGELOG.md
+          body: |
+            > [!IMPORTANT]
+            > This release is for Windows ONLY.
+
+            Full-Changelog: https://github.com/tsukinaha/tsukimi/releases/tag/v0.20.0
           files: |
-            CHANGELOG.md
-          tag_name: ${{ env.TAG_NAME }}
+            *.toml
+          tag_name: v0.20.2
