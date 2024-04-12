@@ -2,7 +2,7 @@
 
 ### Added
 
-- feat: **!!EXPERIMENTAL!!** background blur (GPU intensive)
+- feat: **⚠️EXPERIMENTAL⚠️** background blur (GPU intensive)
 
 ### Changed
 
