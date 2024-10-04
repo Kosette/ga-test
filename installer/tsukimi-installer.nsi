@@ -16,7 +16,7 @@ VIProductVersion "${VERSION}"
 VIAddVersionKey "ProductName" "Tsukimi"
 VIAddVersionKey "FileVersion" "${VERSION}"
 VIAddVersionKey "ProductVersion" "${VERSION}"
-VIAddVersionKey "LegalCopyright" "© 2024 Tsukimi Team"
+VIAddVersionKey "LegalCopyright" "© 2024 tsukinaha"
 VIAddVersionKey "FileDescription" "Tsukimi Installer"
 
 ; 定义宏以检查并卸载之前的安装
@@ -88,14 +88,14 @@ Section "$(SecTsukimiName)" SecTsukimi
     
     ; 创建开始菜单快捷方式
     CreateDirectory "$SMPROGRAMS\Tsukimi"
-    CreateShortcut "$SMPROGRAMS\Tsukimi\Tsukimi.lnk" "$INSTDIR\Tsukimi.exe"
+    CreateShortcut "$SMPROGRAMS\Tsukimi\Tsukimi.lnk" "$INSTDIR\bin\tsukimi.exe"
     CreateShortcut "$SMPROGRAMS\Tsukimi\Uninstall Tsukimi.lnk" "$INSTDIR\uninstall.exe"
 
     ; 写入卸载信息到注册表
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Tsukimi" "DisplayName" "Tsukimi"
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Tsukimi" "UninstallString" '"$INSTDIR\uninstall.exe"'
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Tsukimi" "DisplayIcon" "$INSTDIR\Tsukimi.exe"
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Tsukimi" "Publisher" "Tsukimi Team"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Tsukimi" "DisplayIcon" "$INSTDIR\bin\tsukimi.exe"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Tsukimi" "Publisher" "tsukinaha"
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Tsukimi" "DisplayVersion" "${VERSION}"
     WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Tsukimi" "NoModify" 1
     WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Tsukimi" "NoRepair" 1
@@ -107,7 +107,7 @@ Section "$(SecTsukimiName)" SecTsukimi
 SectionEnd
 
 Section "$(SecDesktopShortcutName)" SecDesktopShortcut
-    CreateShortcut "$DESKTOP\Tsukimi.lnk" "$INSTDIR\Tsukimi.exe"
+    CreateShortcut "$DESKTOP\Tsukimi.lnk" "$INSTDIR\bin\tsukimi.exe"
 SectionEnd
 
 ; 描述
