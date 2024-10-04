@@ -21,8 +21,9 @@ VIAddVersionKey "FileDescription" "Tsukimi Installer"
 
 ; 定义宏以检查并卸载之前的安装
 !macro CheckAndUninstallPrevious
-    IfFileExists "$INSTDIR\uninstall.exe" 0 noprevious
-        MessageBox MB_OKCANCEL|MB_ICONINFORMATION "$(PreviousInstallDetected)" IDOK uninstall IDCANCEL exit
+    IfFileExists "$INSTDIR\uninstall.exe" 0 continue_install
+        MessageBox MB_OKCANCEL|MB_ICONINFORMATION "$(PreviousInstallDetected)" IDOK uninstall
+        Abort ; 如果用户选择取消，则中止安装
     uninstall:
         ; 执行卸载操作
         ExecWait '"$INSTDIR\uninstall.exe" /S _?=$INSTDIR' $0
@@ -30,10 +31,7 @@ VIAddVersionKey "FileDescription" "Tsukimi Installer"
             MessageBox MB_OK|MB_ICONSTOP "$(UninstallFailed)"
             Abort
         ${EndIf}
-        Goto done
-    noprevious:
-        ; 执行新安装操作
-    done:
+    continue_install:
 !macroend
 
 ; 界面设置
