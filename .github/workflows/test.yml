@@ -20,4 +20,4 @@ jobs:
         shell: powershell
         run: |
           which makensis.exe
-          ls 'C:\Program Files (x86)\NSIS'
+          ls 'C:\Program Files\NSIS'
